@@ -11,12 +11,14 @@ namespace Assets.Scripts.Tetris
         private FigureControl _control;
         private SpawnFigure _spawn;
         private TileGrid _grid;
+        private Score _score;
 
         private bool _isPause;
 
-        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn)
+        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, Score score)
         {
             _control = control;
+            _score = score;
             _spawn = spawn;
             _grid = grid;
 
@@ -54,6 +56,7 @@ namespace Assets.Scripts.Tetris
             _grid.ClearGrid();
             _spawn.Spawn();
             _timeStep = 0f;
+            _score.Reset();
         }
 
         private void GameOver()

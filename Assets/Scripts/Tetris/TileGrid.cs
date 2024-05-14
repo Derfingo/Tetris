@@ -7,11 +7,15 @@ namespace Assets.Scripts.Tetris
     {
         [SerializeField] private Tilemap _tilemap;
 
+        private IScore _score;
+
         private int _rows;
         private int _columns;
 
-        public void Initialize()
+        public void Initialize(IScore score)
         {
+            _score = score;
+
             _columns = 10;
             _rows = 20;
         }
@@ -23,7 +27,6 @@ namespace Assets.Scripts.Tetris
 
         private void ClearRow(int row)
         {
-
             for (int column = 0; column < _columns; column++)
             {
                 _tilemap.SetTile(new Vector3Int(column, row, 0), null);
@@ -50,6 +53,14 @@ namespace Assets.Scripts.Tetris
                 var tile = _tilemap.GetTile(new Vector3Int(column, row, 0));
                 _tilemap.SetTile(new Vector3Int(column, row - numCleared, 0), tile);
                 _tilemap.SetTile(new Vector3Int(column, row, 0), null);
+            }
+        }
+
+        private void UpdateScore(int count)
+        {
+            if (count > 0)
+            {
+                _score.Add(count);
             }
         }
 
@@ -87,6 +98,8 @@ namespace Assets.Scripts.Tetris
                     MoveRowDown(row, cleared);
                 }
             }
+
+            UpdateScore(cleared);
         }
 
         public void ClearGrid()
