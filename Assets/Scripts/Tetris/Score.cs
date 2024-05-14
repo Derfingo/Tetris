@@ -5,28 +5,35 @@ namespace Assets.Scripts.Tetris
 {
     public class Score : MonoBehaviour, IScore
     {
-        [SerializeField] private TextMeshProUGUI _scoreText;
+        [SerializeField] private TextMeshProUGUI _amountText;
+        [SerializeField] private TextMeshProUGUI _topText;
 
-        private int _score;
+        public int Amount { get; private set; }
+
         private int _multiplayer;
 
         public void Initialize()
         {
-            _score = 0;
+            Amount = 0;
             _multiplayer = 500;
         }
 
         public void Add(int count)
         {
-            int score = count * _multiplayer;
-            _score += score;
-            _scoreText.text = _score.ToString();
+            int amount = count * _multiplayer;
+            Amount += amount;
+            _amountText.text = Amount.ToString();
         }
 
         public void Reset()
         {
-            _score = 0;
-            _scoreText.text = _score.ToString();
+            Amount = 0;
+            _amountText.text = Amount.ToString();
+        }
+
+        public void SetTop(int count)
+        {
+            _topText.text = count.ToString();
         }
     }
 }

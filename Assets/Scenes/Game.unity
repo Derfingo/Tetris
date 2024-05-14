@@ -841,7 +841,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8276e202cda70bf4c98c9edfae60a53c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scoreText: {fileID: 927175671}
+  _amountText: {fileID: 927175671}
+  _topText: {fileID: 570539117}
 --- !u!4 &999442972
 Transform:
   m_ObjectHideFlags: 0
@@ -1310,6 +1311,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4118628245894222314, guid: b50ef1c46a1561b4288a8fe8c73c6e88, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5657814264310881755, guid: b50ef1c46a1561b4288a8fe8c73c6e88, type: 3}
       propertyPath: m_Name
       value: Back

@@ -1,5 +1,4 @@
 using Assets.Scripts.Tetris;
-using System;
 using UnityEngine;
 
 public class Initialization : MonoBehaviour
@@ -11,6 +10,7 @@ public class Initialization : MonoBehaviour
 
     private KeyboardInput _input;
     private FigureControl _control;
+    private BinarySaveSystem _saveSystem;
 
     private void Awake()
     {
@@ -19,12 +19,18 @@ public class Initialization : MonoBehaviour
 
     private void Compose()
     {
+        BindSaveSystem();
         BindInput();
         BindControl();
         BindGrid();
         BindSpawn();
         BindGameLoop();
         BindScore();
+    }
+
+    private void BindSaveSystem()
+    {
+        _saveSystem = new BinarySaveSystem();
     }
 
     private void BindScore()
@@ -54,6 +60,6 @@ public class Initialization : MonoBehaviour
 
     private void BindGameLoop()
     {
-        _gameLoop.Initialize(_tileGrid, _control, _spawn, _score);
+        _gameLoop.Initialize(_tileGrid, _control, _spawn, _score, _saveSystem);
     }
 }
