@@ -1,11 +1,15 @@
 using Assets.Scripts.Tetris;
+using System;
 using UnityEngine;
 
-public class Initialization : MonoBehaviour
+public class Initialization : MonoBehaviour, IInitialization
 {
+    public event Action OnInitializedEvent;
+
     [SerializeField] private SpawnFigure _spawn;
     [SerializeField] private TileGrid _tileGrid;
     [SerializeField] private GameLoop _gameLoop;
+    [SerializeField] private GameState _gameState;
     [SerializeField] private Score _score;
 
     private KeyboardInput _input;
@@ -15,6 +19,8 @@ public class Initialization : MonoBehaviour
     private void Awake()
     {
         Compose();
+
+        OnInitializedEvent?.Invoke();
     }
 
     private void Compose()
@@ -26,6 +32,12 @@ public class Initialization : MonoBehaviour
         BindSpawn();
         BindGameLoop();
         BindScore();
+        BindGameState();
+    }
+
+    private void BindGameState()
+    {
+        _gameState.Initialize(_tileGrid, _spawn, _score, _saveSystem, this);
     }
 
     private void BindSaveSystem()
@@ -60,6 +72,6 @@ public class Initialization : MonoBehaviour
 
     private void BindGameLoop()
     {
-        _gameLoop.Initialize(_tileGrid, _control, _spawn, _score, _saveSystem);
+        _gameLoop.Initialize(_tileGrid, _control, _spawn);
     }
 }
