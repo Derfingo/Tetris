@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Tetris
 {
-    public class KeyboardInput
+    public class KeyboardInput : IPause
     {
         public event Action OnDrop;
         public event Action<int> OnRotate;
@@ -17,6 +17,18 @@ namespace Assets.Scripts.Tetris
             _input = new InputDevices();
             _input.Enable();
             AddListeners();
+        }
+
+        public void Pause(bool isPaused)
+        {
+            if (isPaused)
+            {
+                _input.Disable();
+            }
+            else
+            {
+                _input.Enable();
+            }
         }
 
         private void Drop(InputAction.CallbackContext context)

@@ -10,10 +10,13 @@ public class Initialization : MonoBehaviour, IInitialization
     [SerializeField] private TileGrid _tileGrid;
     [SerializeField] private GameLoop _gameLoop;
     [SerializeField] private GameState _gameState;
+    [SerializeField] private GamePresenter _presenter;
+    [SerializeField] private ViewController _view;
     [SerializeField] private Score _score;
 
     private KeyboardInput _input;
     private FigureControl _control;
+    private PauseHandler _pauseHandler;
     private BinarySaveSystem _saveSystem;
 
     private void Awake()
@@ -33,6 +36,26 @@ public class Initialization : MonoBehaviour, IInitialization
         BindGameLoop();
         BindScore();
         BindGameState();
+        BindView();
+        BindPause();
+        BindPresenter();
+    }
+
+    private void BindPause()
+    {
+        _pauseHandler = new PauseHandler();
+        _pauseHandler.Register(_gameLoop);
+        _pauseHandler.Register(_input);
+    }
+
+    private void BindView()
+    {
+        _view.Initialize();
+    }
+
+    private void BindPresenter()
+    {
+        _presenter.Initialize(_view, _pauseHandler);
     }
 
     private void BindGameState()

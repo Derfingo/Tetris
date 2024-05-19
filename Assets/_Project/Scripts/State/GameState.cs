@@ -36,10 +36,6 @@ namespace Assets.Scripts.Tetris
             StartOver();
         }
 
-        private void Pause()
-        {
-        }
-
         private void SaveScore()
         {
             if (_score.Amount > _saveData.Score)
