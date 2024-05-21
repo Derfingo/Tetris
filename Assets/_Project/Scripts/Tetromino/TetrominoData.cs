@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Tetris
 {
@@ -7,6 +8,7 @@ namespace Assets.Scripts.Tetris
     public struct TetrominoData
     {
         public Tile Tile;
+        public Image Image;
         public FigureType Type;
 
         public Vector2Int[] Cells { get; private set; }

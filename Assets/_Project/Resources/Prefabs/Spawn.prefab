@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6193458634013563569
+--- !u!1 &5450102842595714502
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6193458634013563564}
-  - component: {fileID: 6193458634013563567}
-  - component: {fileID: 6193458634013563566}
+  - component: {fileID: 5286882197371789209}
+  - component: {fileID: 3598369659789575245}
   m_Layer: 0
   m_Name: Spawn
   m_TagString: Untagged
@@ -18,60 +17,53 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6193458634013563564
+--- !u!4 &5286882197371789209
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193458634013563569}
+  m_GameObject: {fileID: 5450102842595714502}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6193458634013563567
+--- !u!114 &3598369659789575245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193458634013563569}
+  m_GameObject: {fileID: 5450102842595714502}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1450ad733b1336443b1218a6c18155cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPosition: {x: 0, y: 0, z: 0}
+  _spawnPosition: {x: 4, y: 18, z: 0}
   _data:
   - Tile: {fileID: 11400000, guid: afa380e50c342e54e83b85b1e0b2f4bc, type: 2}
+    Image: {fileID: 0}
     Type: 0
   - Tile: {fileID: 11400000, guid: fce0f767599d27b4d8593940e0d00731, type: 2}
+    Image: {fileID: 0}
     Type: 1
   - Tile: {fileID: 11400000, guid: 319422c06a3a02a44b380225266ce39b, type: 2}
+    Image: {fileID: 0}
     Type: 2
   - Tile: {fileID: 11400000, guid: 474c1ef5f22fe714981458b753cc6f67, type: 2}
+    Image: {fileID: 0}
     Type: 3
   - Tile: {fileID: 11400000, guid: 1ff6594a97c579d4ba3a347852b984ee, type: 2}
+    Image: {fileID: 0}
     Type: 4
   - Tile: {fileID: 11400000, guid: ae7e67c04edfeac44b2fbce09eed396f, type: 2}
+    Image: {fileID: 0}
     Type: 5
   - Tile: {fileID: 11400000, guid: 866fb1bde7e1d744da183241812cc7a9, type: 2}
+    Image: {fileID: 0}
     Type: 6
-  _activeFigure: {fileID: 6193458634013563566}
---- !u!114 &6193458634013563566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193458634013563569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9711fb34c7088104597a95a76eea7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grid: {fileID: 0}

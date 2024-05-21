@@ -55,7 +55,7 @@ public class Initialization : MonoBehaviour, IInitialization
 
     private void BindPresenter()
     {
-        _presenter.Initialize(_view, _pauseHandler);
+        _presenter.Initialize(_view, _pauseHandler, _spawn, _view);
     }
 
     private void BindGameState()

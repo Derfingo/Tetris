@@ -1,28 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = System.Random;
 
 namespace Assets.Scripts.Tetris
 {
-    public class SpawnFigure : MonoBehaviour
+    public class SpawnFigure : MonoBehaviour, ISpawn
     {
-        public event Action OnGameOver;
-
         [SerializeField] private Vector3Int _spawnPosition;
         [SerializeField] private TetrominoData[] _data;
-        [SerializeField] private Figure _activeFigure;
 
-        private System.Random _random;
+        public event Action OnGameOverEvent;
+        public event Action<Image> OnShowNextEvent;
 
         private FigureControl _control;
         private TileGrid _grid;
+        private Random _random;
+
+        private Queue<Figure> _figures;
 
         public void Initialize(FigureControl control, TileGrid grid)
         {
             _control = control;
             _grid = grid;
 
-            _random = new System.Random();
+            _random = new Random();
+            _figures = new Queue<Figure>();
             InitializeData();
+            FillQueue();
+        }
+
+        public void Spawn()
+        {
+            if (_figures.Count < 2)
+            {
+                FillQueue();
+            }
+
+            Figure current = _figures.Dequeue();
+            OnShowNextEvent?.Invoke(_figures.Peek().Data.Image);
+            _control.ActiveFigure = current;
+
+            if (_grid.IsValidPosition(current, _spawnPosition))
+            {
+                _grid.SetFigure(current);
+            }
+            else
+            {
+                OnGameOverEvent?.Invoke();
+            }
         }
 
         private void InitializeData()
@@ -33,27 +60,25 @@ namespace Assets.Scripts.Tetris
             }
         }
 
+        private void FillQueue()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                _figures.Enqueue(Prepare());
+            }
+        }
+
         private int GetRandomIndex()
         {
             int number = _random.Next(0, int.MaxValue);
             return Math.Abs(number % _data.Length);
         }
 
-        public void Spawn()
+        private Figure Prepare()
         {
             int index = GetRandomIndex();
             TetrominoData data = _data[index];
-            _activeFigure.Initialize(data, _spawnPosition);
-            _control.ActiveFigure = _activeFigure;
-
-            if (_grid.IsValidPosition(_activeFigure, _spawnPosition))
-            {
-                _grid.SetFigure(_activeFigure);
-            }
-            else
-            {
-                OnGameOver?.Invoke();
-            }
+            return new Figure(data, _spawnPosition, _grid);
         }
     }
 }

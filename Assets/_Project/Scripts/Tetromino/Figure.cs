@@ -2,20 +2,20 @@
 
 namespace Assets.Scripts.Tetris
 {
-    public class Figure : MonoBehaviour
+    public class Figure
     {
-        [SerializeField] private TileGrid _grid;
-
         public TetrominoData Data { get; private set; }
         public Vector3Int[] Cells { get; private set; }
         public Vector3Int Position { get; private set; }
 
         private int _rotationIndex;
+        private TileGrid _grid;
 
-        public void Initialize(TetrominoData data, Vector3Int position)
+        public Figure(TetrominoData data, Vector3Int position, TileGrid grid)
         {
             Data = data;
             Position = position;
+            _grid = grid;
             _rotationIndex = 0;
             FillCells();
         }

@@ -56,13 +56,13 @@ namespace Assets.Scripts.Tetris
 
         private void AddListeners()
         {
-            _spawn.OnGameOver += GameOver;
+            _spawn.OnGameOverEvent += GameOver;
             _init.OnInitializedEvent += StartOver;
         }
 
         private void RemoveListeners()
         {
-            _spawn.OnGameOver -= GameOver;
+            _spawn.OnGameOverEvent -= GameOver;
             _init.OnInitializedEvent -= StartOver;
         }
     }
