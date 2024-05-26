@@ -3,19 +3,18 @@ using UnityEngine.Tilemaps;
 
 namespace Assets.Scripts.Tetris
 {
-    public class TileGrid : MonoBehaviour
+    public class TileGrid
     {
-        [SerializeField] private Tilemap _tilemap;
+        private readonly IScore _score;
+        private readonly Tilemap _tilemap;
 
-        private IScore _score;
+        private readonly int _rows;
+        private readonly int _columns;
 
-        private int _rows;
-        private int _columns;
-
-        public void Initialize(IScore score)
+        public TileGrid(IScore score, Tilemap tilemap)
         {
+            _tilemap = tilemap;
             _score = score;
-
             _columns = 10;
             _rows = 20;
         }
@@ -61,6 +60,7 @@ namespace Assets.Scripts.Tetris
             if (count > 0)
             {
                 _score.Add(count);
+                _score.AddLines(count);
             }
         }
 

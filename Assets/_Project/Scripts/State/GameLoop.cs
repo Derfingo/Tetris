@@ -4,7 +4,7 @@ namespace Assets.Scripts.Tetris
 {
     public class GameLoop : MonoBehaviour, IPause
     {
-        [SerializeField] private float _stepDelay = 1f;
+        [SerializeField] private float _stepDelay;
 
         private float _timeStep;
 
@@ -12,7 +12,7 @@ namespace Assets.Scripts.Tetris
         private SpawnFigure _spawn;
         private TileGrid _grid;
 
-        private bool _isPause = false;
+        private bool _isPause = true;
 
         public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn)
         {

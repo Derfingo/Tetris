@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Tetris
 {
-    public interface IShow
+    public interface IShowView
     {
         void Show(Image image);
     }

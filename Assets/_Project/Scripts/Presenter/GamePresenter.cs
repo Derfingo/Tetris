@@ -1,26 +1,49 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace Assets.Scripts.Tetris
+﻿namespace Assets.Scripts.Tetris
 {
-    public class GamePresenter : MonoBehaviour
+    public class GamePresenter
     {
-        private IPauseView _pauseView;
-        private IShow _showView;
+        private readonly ISettingsView _settingsView;
+        private readonly IPauseView _pauseView;
+        private readonly IScoreView _scoreView;
+        private readonly IShowView _showView;
+        private readonly IMainView _mainView;
 
-        private ISpawn _spawn;
-        private IPause _pause;
+        private readonly ISpawn _spawn;
+        private readonly IScore _score;
+        private readonly IPause _pause;
+        private readonly IGameState _state;
 
-        public void Initialize(IPauseView pauseView, IPause pause, ISpawn spawn, IShow show)
+        public GamePresenter(ISettingsView settingsView, 
+                             IPauseView pauseView, 
+                             IScoreView scoreView, 
+                             IShowView showView, 
+                             IMainView mainView, 
+                             ISpawn spawn, 
+                             IScore score, 
+                             IPause pause, 
+                             IGameState state)
         {
+            _settingsView = settingsView;
             _pauseView = pauseView;
-            _showView = show;
+            _scoreView = scoreView;
+            _showView = showView;
+            _mainView = mainView;
 
-            _pause = pause;
             _spawn = spawn;
+            _score = score;
+            _pause = pause;
+            _state = state;
 
             _pauseView.OnPauseClickEvent += _pause.Pause;
             _spawn.OnShowNextEvent += _showView.Show;
+
+            _score.ChangeCurrentScoreEvent += _scoreView.SetCurrent;
+            _score.ChangeLinesScoreEvent += _scoreView.SetLines;
+            _score.ChangeTopScoreEvent += _scoreView.SetTop;
+
+            _state.OnReadyToStartEvent += _mainView.ShowButtons;
+            _mainView.OnStartClickEvent += _state.StartOver;
+            _mainView.OnStartClickEvent += () => _pause.Pause(false);
         }
     }
 }

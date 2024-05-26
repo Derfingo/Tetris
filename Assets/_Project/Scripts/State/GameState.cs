@@ -1,28 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace Assets.Scripts.Tetris
 {
-    public class GameState : MonoBehaviour
+    public class GameState : IGameState
     {
-        private IInitialization _init;
-        private ISaveSystem _saveSystem;
-        private SpawnFigure _spawn;
-        private TileGrid _grid;
-        private Score _score;
+        private readonly ISaveSystem _saveSystem;
+        private readonly IInitialization _init;
+        private readonly SpawnFigure _spawn;
+        private readonly TileGrid _grid;
+        private readonly Score _score;
         private SaveData _saveData;
 
-        public void Initialize(TileGrid grid, SpawnFigure spawn, Score score, ISaveSystem save, IInitialization init)
+        public event Action OnReadyToStartEvent;
+
+        public GameState(IInitialization init, ISaveSystem saveSystem, SpawnFigure spawn, TileGrid grid, Score score)
         {
-            _score = score;
+            _init = init;
+            _saveSystem = saveSystem;
             _spawn = spawn;
             _grid = grid;
-            _saveSystem = save;
-            _init = init;
+            _score = score;
 
             AddListeners();
         }
 
-        private void StartOver()
+        public void StartOver()
         {
             _grid.ClearGrid();
             _spawn.Spawn();
@@ -54,16 +56,21 @@ namespace Assets.Scripts.Tetris
             _score.SetTop(_saveData.Score);
         }
 
+        private void ReadyToStart()
+        {
+            OnReadyToStartEvent?.Invoke();
+        }
+
         private void AddListeners()
         {
             _spawn.OnGameOverEvent += GameOver;
-            _init.OnInitializedEvent += StartOver;
+            _init.OnInitializedEvent += ReadyToStart;
         }
 
         private void RemoveListeners()
         {
             _spawn.OnGameOverEvent -= GameOver;
-            _init.OnInitializedEvent -= StartOver;
+            _init.OnInitializedEvent -= ReadyToStart;
         }
     }
 }

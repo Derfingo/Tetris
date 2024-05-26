@@ -14,9 +14,12 @@ namespace Assets.Scripts.Tetris
             }
         }
 
-        public void Register(IPause handler)
+        public void Register(params IPause[] handlers)
         {
-            _handlers.Add(handler);
+            foreach (var handler in handlers)
+            {
+                _handlers.Add(handler);
+            }
         }
 
         public void Unregister(IPause handler)
