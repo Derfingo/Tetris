@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Tetris
 {
-    public class GameLoop : MonoBehaviour, IPause
+    public class GameLoop : MonoBehaviour, IPause, IGameLoop, IReset
     {
         [SerializeField] private float _stepDelay;
 
@@ -23,6 +23,19 @@ namespace Assets.Scripts.Tetris
             _grid = grid;
 
             AddListeners();
+            Debug.Log(_stepDelay);
+        }
+
+        void IReset.Reset()
+        {
+            _timeStep = 0;
+            _stepDelay = 0.5f;
+        }
+
+        public void ChangeStepDelay(float decrease)
+        {
+            _stepDelay -= decrease;
+            Debug.Log(_stepDelay);
         }
 
         public void Pause(bool isPaused)

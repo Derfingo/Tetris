@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Assets.Scripts.Tetris
 {
-    public class TileGrid
+    public class TileGrid : IReset
     {
         private readonly IScore _score;
         private readonly Tilemap _tilemap;
@@ -17,6 +18,64 @@ namespace Assets.Scripts.Tetris
             _score = score;
             _columns = 10;
             _rows = 20;
+        }
+
+        public void Reset()
+        {
+            ClearGrid();
+        }
+
+        public void SetFigure(Figure figure)
+        {
+            for (int i = 0; i < figure.Cells.Length; i++)
+            {
+                Vector3Int tilePosition = figure.Cells[i] + figure.Position;
+                _tilemap.SetTile(tilePosition, figure.Data.Tile);
+            }
+        }
+
+        public void ClearFigure(Figure figure)
+        {
+            for (int i = 0; i < figure.Cells.Length; i++)
+            {
+                Vector3Int tilePosition = figure.Cells[i] + figure.Position;
+                _tilemap.SetTile(tilePosition, null);
+            }
+        }
+
+        public void ClearFullLines()
+        {
+            int cleared = 0;
+
+            for (int row = 0; row < _rows; row++)
+            {
+                if (IsRowFull(row))
+                {
+                    ClearRow(row);
+                    cleared++;
+                }
+                else if (cleared > 0)
+                {
+                    MoveRowDown(row, cleared);
+                }
+            }
+
+            UpdateScore(cleared);
+        }
+
+        public bool IsValidPosition(Figure figure, Vector3Int offset)
+        {
+            for (int i = 0; i < figure.Cells.Length; i++)
+            {
+                Vector3Int tilePosition = figure.Cells[i] + offset;
+
+                if (!IsInside(tilePosition.y, tilePosition.x) || _tilemap.HasTile(tilePosition))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private bool IsInside(int row, int column)
@@ -64,45 +123,7 @@ namespace Assets.Scripts.Tetris
             }
         }
 
-        public void SetFigure(Figure figure)
-        {
-            for (int i = 0; i < figure.Cells.Length; i++)
-            {
-                Vector3Int tilePosition = figure.Cells[i] + figure.Position;
-                _tilemap.SetTile(tilePosition, figure.Data.Tile);
-            }
-        }
-
-        public void ClearFigure(Figure figure)
-        {
-            for (int i = 0; i < figure.Cells.Length; i++)
-            {
-                Vector3Int tilePosition = figure.Cells[i] + figure.Position;
-                _tilemap.SetTile(tilePosition, null);
-            }
-        }
-
-        public void ClearFullLines()
-        {
-            int cleared = 0;
-
-            for (int row = 0; row < _rows; row++)
-            {
-                if (IsRowFull(row))
-                {
-                    ClearRow(row);
-                    cleared++;
-                }
-                else if (cleared > 0)
-                {
-                    MoveRowDown(row, cleared);
-                }
-            }
-
-            UpdateScore(cleared);
-        }
-
-        public void ClearGrid()
+        private void ClearGrid()
         {
             for (int row = 0; row < _rows; row++)
             {
@@ -116,21 +137,6 @@ namespace Assets.Scripts.Tetris
                     }
                 }
             }
-        }
-
-        public bool IsValidPosition(Figure figure, Vector3Int offset)
-        {
-            for (int i = 0; i < figure.Cells.Length; i++)
-            {
-                Vector3Int tilePosition = figure.Cells[i] + offset;
-
-                if (!IsInside(tilePosition.y, tilePosition.x) || _tilemap.HasTile(tilePosition))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

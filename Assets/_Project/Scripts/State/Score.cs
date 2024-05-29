@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Tetris
 {
-    public class Score : IScore
+    public class Score : IScore, IReset
     {
         public event Action<int> ChangeCurrentScoreEvent;
         public event Action<int> ChangeLinesScoreEvent;

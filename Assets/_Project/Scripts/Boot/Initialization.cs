@@ -25,8 +25,10 @@ public class Initialization : MonoBehaviour, IInitialization
     private GameState _gameState;
     private FigureControl _control;
     private GamePresenter _presenter;
+    private ResetHandler _resetHandler;
     private PauseHandler _pauseHandler;
     private BinarySaveSystem _saveSystem;
+    private GameDifficulty _gameDifficulty;
 
     private void Awake()
     {
@@ -37,17 +39,36 @@ public class Initialization : MonoBehaviour, IInitialization
 
     private void Compose()
     {
-        BindSaveSystem();
         BindInput();
-        BindControl();
+        BindSaveSystem();
         BindScore();
+
+        BindControl();
+
         BindGrid();
         BindSpawn();
+
         BindGameLoop();
-        BindGameState();
-        BindView();
+        BindDifficulty();
+
+        BindReset();
         BindPause();
+
+        BindGameState();
+
+        BindView();
         BindPresenter();
+    }
+
+    private void BindReset()
+    {
+        _resetHandler = new ResetHandler();
+        _resetHandler.Register(_score, _gameDifficulty, _gameLoop, _tileGrid);
+    }
+
+    private void BindDifficulty()
+    {
+        _gameDifficulty = new GameDifficulty(_score, _gameLoop);
     }
 
     private void BindPause()
@@ -71,7 +92,7 @@ public class Initialization : MonoBehaviour, IInitialization
 
     private void BindGameState()
     {
-        _gameState = new GameState(this, _saveSystem, _spawn, _tileGrid, _score);
+        _gameState = new GameState(this, _saveSystem, _spawn, _score, _resetHandler);
     }
 
     private void BindSaveSystem()

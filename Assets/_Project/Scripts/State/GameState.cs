@@ -5,30 +5,30 @@ namespace Assets.Scripts.Tetris
     public class GameState : IGameState
     {
         private readonly ISaveSystem _saveSystem;
+        private readonly IReset _resetHandler;
         private readonly IInitialization _init;
         private readonly SpawnFigure _spawn;
-        private readonly TileGrid _grid;
         private readonly Score _score;
         private SaveData _saveData;
 
         public event Action OnReadyToStartEvent;
 
-        public GameState(IInitialization init, ISaveSystem saveSystem, SpawnFigure spawn, TileGrid grid, Score score)
+        public GameState(IInitialization init, ISaveSystem saveSystem, SpawnFigure spawn, Score score, IReset resetHandler)
         {
-            _init = init;
+            _resetHandler = resetHandler;
             _saveSystem = saveSystem;
             _spawn = spawn;
-            _grid = grid;
             _score = score;
+            _init = init;
 
             AddListeners();
+            _resetHandler = resetHandler;
         }
 
         public void StartOver()
         {
-            _grid.ClearGrid();
+            _resetHandler.Reset();
             _spawn.Spawn();
-            _score.Reset();
             LoadScore();
         }
 
