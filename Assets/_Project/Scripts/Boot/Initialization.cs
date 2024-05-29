@@ -106,6 +106,6 @@ public class Initialization : MonoBehaviour, IInitialization
 
     private void BindGameLoop()
     {
-        _gameLoop.Initialize(_tileGrid, _control, _spawn);
+        _gameLoop.Initialize(_tileGrid, _control, _spawn, _input);
     }
 }

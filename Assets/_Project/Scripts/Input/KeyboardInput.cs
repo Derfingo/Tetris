@@ -7,6 +7,7 @@ namespace Assets.Scripts.Tetris
     public class KeyboardInput : IPause
     {
         public event Action OnDrop;
+        public event Action<bool> OnDropSlow;
         public event Action<int> OnRotate;
         public event Action<int> OnMoveHorizontal;
 
@@ -36,6 +37,19 @@ namespace Assets.Scripts.Tetris
             OnDrop?.Invoke();
         }
 
+        private void DropSlow(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                OnDropSlow?.Invoke(true);
+            }
+
+            if (context.canceled)
+            {
+                OnDropSlow?.Invoke(false);
+            }
+        }
+
         private void Rotate(InputAction.CallbackContext context)
         {
             OnRotate?.Invoke((int)context.ReadValue<Vector2>().x);
@@ -49,6 +63,8 @@ namespace Assets.Scripts.Tetris
         private void AddListeners()
         {
             _input.Keyboard.Move.performed += MoveHorizontal;
+            _input.Keyboard.DropSlow.started += DropSlow;
+            _input.Keyboard.DropSlow.canceled += DropSlow;
             _input.Keyboard.Rotate.performed += Rotate;
             _input.Keyboard.Drop.performed += Drop;
         }
@@ -56,6 +72,8 @@ namespace Assets.Scripts.Tetris
         private void RemoveListeners()
         {
             _input.Keyboard.Move.performed -= MoveHorizontal;
+            _input.Keyboard.DropSlow.started -= DropSlow;
+            _input.Keyboard.DropSlow.canceled -= DropSlow;
             _input.Keyboard.Rotate.performed -= Rotate;
             _input.Keyboard.Drop.performed -= Drop;
         }

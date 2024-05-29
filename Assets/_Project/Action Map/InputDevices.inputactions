@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Drop Slow",
+                    "type": "Button",
+                    "id": "e8eba5cd-de97-4d36-88ee-237ed7d57870",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "e3f8d8eb-a9f8-46e5-a8d1-c485c4f5c95b",
@@ -154,6 +163,17 @@
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "852babfe-d889-4358-a96f-48bc252ef9c0",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop Slow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

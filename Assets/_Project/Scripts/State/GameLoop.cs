@@ -8,16 +8,18 @@ namespace Assets.Scripts.Tetris
 
         private float _timeStep;
 
+        private KeyboardInput _input;
         private FigureControl _control;
         private SpawnFigure _spawn;
         private TileGrid _grid;
 
         private bool _isPause = true;
 
-        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn)
+        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, KeyboardInput input)
         {
             _control = control;
             _spawn = spawn;
+            _input = input;
             _grid = grid;
 
             AddListeners();
@@ -49,14 +51,28 @@ namespace Assets.Scripts.Tetris
             _spawn.Spawn();
         }
 
+        private void ChangeStepDelay(bool isDrop)
+        {
+            if (isDrop)
+            {
+                _stepDelay /= 4;
+            }
+            else
+            {
+                _stepDelay *= 4;
+            }
+        }
+
         private void AddListeners()
         {
             _control.OnLand += UpdateCycle;
+            _input.OnDropSlow += ChangeStepDelay;
         }
 
         private void RemoveListeners()
         {
             _control.OnLand -= UpdateCycle;
+            _input.OnDropSlow -= ChangeStepDelay;
         }
     }
 }
