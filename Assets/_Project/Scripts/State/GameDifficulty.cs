@@ -35,7 +35,6 @@ namespace Assets.Scripts.Tetris
                 }
                 else if (_counter % 5 == 0)
                 {
-                    Debug.Log("Difference");
                     _gameLoop.ChangeStepDelay(_endDecrease);
                 }
             }

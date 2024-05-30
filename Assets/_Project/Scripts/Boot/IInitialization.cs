@@ -1,6 +1,9 @@
 ﻿using System;
 
-public interface IInitialization
+namespace Assets.Scripts.Tetris
 {
-    public event Action OnInitializedEvent;
+    public interface IInitialization
+    {
+        public event Action OnInitializedEvent;
+    }
 }

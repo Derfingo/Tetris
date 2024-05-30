@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Tetris
 {
-    public class KeyboardInput : IPause
+    public class KeyboardInput : IPause, IInput
     {
         public event Action OnDrop;
         public event Action<bool> OnDropSlow;

@@ -7,7 +7,7 @@ namespace Assets.Scripts.Tetris
     {
         public event Action OnLand;
 
-        private readonly KeyboardInput _input;
+        private readonly IInput _input;
 
         private Figure _activeFigure;
 
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Tetris
             set => _activeFigure = value;
         }
 
-        public FigureControl(KeyboardInput input)
+        public FigureControl(IInput input)
         {
             _input = input;
 

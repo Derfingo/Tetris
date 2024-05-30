@@ -6,16 +6,15 @@ namespace Assets.Scripts.Tetris
     {
         [SerializeField] private float _stepDelay;
 
-        private float _timeStep;
-
-        private KeyboardInput _input;
+        private IInput _input;
         private FigureControl _control;
         private SpawnFigure _spawn;
         private TileGrid _grid;
 
+        private float _timeStep;
         private bool _isPause = true;
 
-        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, KeyboardInput input)
+        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, IInput input)
         {
             _control = control;
             _spawn = spawn;
@@ -23,7 +22,6 @@ namespace Assets.Scripts.Tetris
             _grid = grid;
 
             AddListeners();
-            Debug.Log(_stepDelay);
         }
 
         void IReset.Reset()
@@ -68,11 +66,11 @@ namespace Assets.Scripts.Tetris
         {
             if (isDrop)
             {
-                _stepDelay /= 4;
+                Time.timeScale = 4f;
             }
             else
             {
-                _stepDelay *= 4;
+                Time.timeScale = 1f;
             }
         }
 

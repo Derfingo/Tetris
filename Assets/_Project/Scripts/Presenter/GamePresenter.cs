@@ -8,10 +8,10 @@
         private readonly IShowView _showView;
         private readonly IMainView _mainView;
 
+        private readonly IGameState _state;
         private readonly ISpawn _spawn;
         private readonly IScore _score;
         private readonly IPause _pause;
-        private readonly IGameState _state;
 
         public GamePresenter(ISettingsView settingsView, 
                              IPauseView pauseView, 
