@@ -5,17 +5,11 @@ namespace Assets.Scripts.Tetris
 {
     public class FigureControl
     {
-        public event Action OnLand;
+        public event Action OnLandEvent;
 
         private readonly IInput _input;
-
         private Figure _activeFigure;
-
-        public Figure ActiveFigure
-        {
-            get => _activeFigure;
-            set => _activeFigure = value;
-        }
+        public Figure Active => _activeFigure;
 
         public FigureControl(IInput input)
         {
@@ -24,18 +18,30 @@ namespace Assets.Scripts.Tetris
             AddListeners();
         }
 
+        public void SetActive(Figure figure)
+        {
+            if (figure != null)
+            {
+                _activeFigure = figure;
+            }
+            else
+            {
+                throw new NullReferenceException("figure is null");
+            }
+        }
+
         public void MoveDown()
         {
-            if (!_activeFigure.Move(Vector3Int.down))
+            if (!_activeFigure.TryMove(Vector3Int.down, true))
             {
-                OnLand?.Invoke();
+                OnLandEvent?.Invoke();
             }
         }
 
         private void MoveHorizontal(int direction)
         {
             Vector3Int horizontal = new(direction, 0, 0);
-            _activeFigure.Move(horizontal);
+            _activeFigure.TryMove(horizontal, true);
         }
 
         private void Rotate(int direction)
@@ -45,14 +51,12 @@ namespace Assets.Scripts.Tetris
 
         private void Drop()
         {
-            while (true)
+            while (_activeFigure.TryMove(Vector3Int.down, true))
             {
-                if (!_activeFigure.Move(Vector3Int.down))
-                {
-                    OnLand?.Invoke();
-                    return;
-                }
+                continue;
             }
+
+            OnLandEvent?.Invoke();
         }
 
         private void AddListeners()
@@ -67,6 +71,11 @@ namespace Assets.Scripts.Tetris
             _input.OnMoveHorizontal -= MoveHorizontal;
             _input.OnRotate -= Rotate;
             _input.OnDrop -= Drop;
+        }
+
+        ~FigureControl()
+        {
+            RemoveListeners();
         }
     }
 }

@@ -21,5 +21,10 @@ namespace Assets.Scripts.Tetris
             OnPauseClickEvent?.Invoke(isPressed);
             _pausePanel.gameObject.SetActive(isPressed);
         }
+
+        ~PauseView()
+        {
+            _pauseButton.OnClickEvent -= OnPauseClick;
+        }
     }
 }

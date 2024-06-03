@@ -6,14 +6,19 @@ namespace Assets.Scripts.Tetris
     {
         private readonly IScore _score;
         private readonly IGameLoop _gameLoop;
-        private readonly float _initialDecrease = 0.015f;
-        private readonly float _endDecrease = 0.005f;
+        private readonly float _initialDecrease;
+        private readonly float _endDecrease;
+        private const int INITIAL_LINES = 15;
+        private const int END_STEP_LINES = 5;
         private int _counter;
 
-        public GameDifficulty(IScore score, IGameLoop gameLoop)
+        public GameDifficulty(IScore score, IGameLoop gameLoop, float initialDecrease, float endDecrease)
         {
             _gameLoop = gameLoop;
             _score = score;
+
+            _initialDecrease = initialDecrease;
+            _endDecrease = endDecrease;
 
             _score.ChangeLinesScoreEvent += OnDecreaseDelay;
         }
@@ -29,15 +34,20 @@ namespace Assets.Scripts.Tetris
             {
                 _counter++;
 
-                if (_counter < 15)
+                if (_counter < INITIAL_LINES)
                 {
                     _gameLoop.ChangeStepDelay(_initialDecrease);
                 }
-                else if (_counter % 5 == 0)
+                else if (_counter % END_STEP_LINES == 0)
                 {
                     _gameLoop.ChangeStepDelay(_endDecrease);
                 }
             }
+        }
+
+        ~GameDifficulty()
+        {
+            _score.ChangeLinesScoreEvent -= OnDecreaseDelay;
         }
     }
 }

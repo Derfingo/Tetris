@@ -6,41 +6,46 @@ using Random = System.Random;
 
 namespace Assets.Scripts.Tetris
 {
-    public class SpawnFigure : MonoBehaviour, ISpawn
+    public class SpawnFigure : ISpawn
     {
-        [SerializeField] private Vector3Int _spawnPosition;
-        [SerializeField] private TetrominoData[] _data;
-
         public event Action OnGameOverEvent;
         public event Action<Image> OnShowNextEvent;
 
-        private FigureControl _control;
-        private TileGrid _grid;
-        private Random _random;
+        private readonly FigureControl _control;
+        private readonly TileGrid _grid;
+        private readonly Random _random;
 
-        private Queue<Figure> _figures;
+        private Vector3Int _spawnPosition;
+        private readonly TetrominoData[] _figures;
 
-        public void Initialize(FigureControl control, TileGrid grid)
+        private readonly Queue<Figure> _queueFigures;
+        private const sbyte MIN_FIGURES = 2;
+        private const sbyte MAX_FIGURES = 20;
+
+        public SpawnFigure(FigureControl control, TileGrid grid, Vector3Int spawnPosition, TetrominoData[] figures)
         {
             _control = control;
             _grid = grid;
 
+            _figures = figures;
+            _spawnPosition = spawnPosition;
+
             _random = new Random();
-            _figures = new Queue<Figure>();
+            _queueFigures = new Queue<Figure>();
             InitializeData();
             FillQueue();
         }
 
         public void Spawn()
         {
-            if (_figures.Count < 2)
+            if (_queueFigures.Count < MIN_FIGURES)
             {
                 FillQueue();
             }
 
-            Figure current = _figures.Dequeue();
-            OnShowNextEvent?.Invoke(_figures.Peek().Data.Image);
-            _control.ActiveFigure = current;
+            Figure current = _queueFigures.Dequeue();
+            OnShowNextEvent?.Invoke(_queueFigures.Peek().Data.Image);
+            _control.SetActive(current);
 
             if (_grid.IsValidPosition(current, _spawnPosition))
             {
@@ -54,30 +59,30 @@ namespace Assets.Scripts.Tetris
 
         private void InitializeData()
         {
-            for (int i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _figures.Length; i++)
             {
-                _data[i].Initialize();
+                _figures[i].Initialize();
             }
         }
 
         private void FillQueue()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < MAX_FIGURES; i++)
             {
-                _figures.Enqueue(Prepare());
+                _queueFigures.Enqueue(Prepare());
             }
         }
 
         private int GetRandomIndex()
         {
             int number = _random.Next(0, int.MaxValue);
-            return Math.Abs(number % _data.Length);
+            return Math.Abs(number % _figures.Length);
         }
 
         private Figure Prepare()
         {
             int index = GetRandomIndex();
-            TetrominoData data = _data[index];
+            TetrominoData data = _figures[index];
             return new Figure(data, _spawnPosition, _grid);
         }
     }

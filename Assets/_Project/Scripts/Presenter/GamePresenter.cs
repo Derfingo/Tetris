@@ -13,14 +13,14 @@
         private readonly IScore _score;
         private readonly IPause _pause;
 
-        public GamePresenter(ISettingsView settingsView, 
-                             IPauseView pauseView, 
-                             IScoreView scoreView, 
-                             IShowView showView, 
-                             IMainView mainView, 
-                             ISpawn spawn, 
-                             IScore score, 
-                             IPause pause, 
+        public GamePresenter(ISettingsView settingsView,
+                             IPauseView pauseView,
+                             IScoreView scoreView,
+                             IShowView showView,
+                             IMainView mainView,
+                             ISpawn spawn,
+                             IScore score,
+                             IPause pause,
                              IGameState state)
         {
             _settingsView = settingsView;
@@ -34,6 +34,11 @@
             _pause = pause;
             _state = state;
 
+            AddListeners();
+        }
+
+        private void AddListeners()
+        {
             _pauseView.OnPauseClickEvent += _pause.Pause;
             _spawn.OnShowNextEvent += _showView.Show;
 
@@ -44,6 +49,25 @@
             _state.OnReadyToStartEvent += _mainView.ShowButtons;
             _mainView.OnStartClickEvent += _state.StartOver;
             _mainView.OnStartClickEvent += () => _pause.Pause(false);
+        }
+
+        private void RemoveListeners()
+        {
+            _pauseView.OnPauseClickEvent -= _pause.Pause;
+            _spawn.OnShowNextEvent -= _showView.Show;
+
+            _score.ChangeCurrentScoreEvent -= _scoreView.SetCurrent;
+            _score.ChangeLinesScoreEvent -= _scoreView.SetLines;
+            _score.ChangeTopScoreEvent -= _scoreView.SetTop;
+
+            _state.OnReadyToStartEvent -= _mainView.ShowButtons;
+            _mainView.OnStartClickEvent -= _state.StartOver;
+            _mainView.OnStartClickEvent -= () => _pause.Pause(false);
+        }
+
+        ~GamePresenter()
+        {
+            RemoveListeners();
         }
     }
 }

@@ -31,5 +31,11 @@ namespace Assets.Scripts.Tetris
             _settingsView.Hide();
             _mainView.Show();
         }
+        ~ViewTransition()
+        {
+            _mainView.StartButton.onClick.RemoveAllListeners();
+            _mainView.SettingsButton.onClick.RemoveAllListeners();
+            _settingsView.MainMenuButton.onClick.RemoveAllListeners();
+        }
     }
 }

@@ -12,12 +12,13 @@ namespace Assets.Scripts.Tetris
         private readonly int _rows;
         private readonly int _columns;
 
-        public TileGrid(IScore score, Tilemap tilemap)
+        public TileGrid(IScore score, Tilemap tilemap, int columns, int rows)
         {
             _tilemap = tilemap;
             _score = score;
-            _columns = 10;
-            _rows = 20;
+
+            _columns = columns;
+            _rows = rows;
         }
 
         public void Reset()

@@ -17,8 +17,7 @@ namespace Assets.Scripts.Tetris
 
         public void Initialize()
         {
-            _startButton.onClick.AddListener(OnStartClick);
-            _settingsButton.onClick.AddListener(OnSettingsClick);
+            AddListeners();
             _startButton.gameObject.SetActive(false);
             _settingsButton.gameObject.SetActive(false);
             gameObject.SetActive(true);
@@ -38,6 +37,23 @@ namespace Assets.Scripts.Tetris
         private void OnSettingsClick()
         {
             OnSettingsClickEvent?.Invoke();
+        }
+
+        private void AddListeners()
+        {
+            _startButton.onClick.AddListener(OnStartClick);
+            _settingsButton.onClick.AddListener(OnSettingsClick);
+        }
+
+        private void RemoveListeners()
+        {
+            _startButton.onClick.RemoveAllListeners();
+            _settingsButton.onClick.RemoveAllListeners();
+        }
+
+        ~MainView()
+        {
+            RemoveListeners();
         }
     }
 }

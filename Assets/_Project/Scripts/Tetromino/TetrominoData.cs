@@ -16,6 +16,7 @@ namespace Assets.Scripts.Tetris
 
         public void Initialize()
         {
+            Image.color = Tile.color;
             Cells = PositionData.Cells[Type];
             WallKicks = RotationData.WallKicks[Type];
         }

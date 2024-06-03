@@ -72,5 +72,10 @@ namespace Assets.Scripts.Tetris
             _spawn.OnGameOverEvent -= GameOver;
             _init.OnInitializedEvent -= ReadyToStart;
         }
+
+        ~GameState()
+        {
+            RemoveListeners();
+        }
     }
 }

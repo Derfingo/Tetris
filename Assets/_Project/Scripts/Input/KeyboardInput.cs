@@ -77,5 +77,10 @@ namespace Assets.Scripts.Tetris
             _input.Keyboard.Rotate.performed -= Rotate;
             _input.Keyboard.Drop.performed -= Drop;
         }
+
+        ~KeyboardInput()
+        {
+            RemoveListeners();
+        }
     }
 }

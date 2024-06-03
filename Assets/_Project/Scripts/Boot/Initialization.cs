@@ -9,8 +9,8 @@ namespace Assets.Scripts.Tetris
         public event Action OnInitializedEvent;
 
         [SerializeField] private Tilemap _tilemap;
-        [SerializeField] private SpawnFigure _spawn;
         [SerializeField] private GameLoop _gameLoop;
+        [SerializeField] private GameConfigProvider _configProvider;
         [Space()]
         [Header("View")]
         [SerializeField] private ViewTransition _viewTransition;
@@ -22,6 +22,7 @@ namespace Assets.Scripts.Tetris
 
         private Score _score;
         private TileGrid _tileGrid;
+        private SpawnFigure _spawn;
         private KeyboardInput _keyboardInput;
         private GameState _gameState;
         private FigureControl _control;
@@ -31,8 +32,11 @@ namespace Assets.Scripts.Tetris
         private BinarySaveSystem _saveSystem;
         private GameDifficulty _gameDifficulty;
 
+        private GameConfig _config;
+
         private void Awake()
         {
+            _config = _configProvider.Get();
             Compose();
 
             OnInitializedEvent?.Invoke();
@@ -43,8 +47,8 @@ namespace Assets.Scripts.Tetris
             BindInput();
             BindSaveSystem();
             BindScore();
-            BindControl();
             BindGrid();
+            BindControl();
             BindSpawn();
             BindGameLoop();
             BindDifficulty();
@@ -63,7 +67,7 @@ namespace Assets.Scripts.Tetris
 
         private void BindDifficulty()
         {
-            _gameDifficulty = new GameDifficulty(_score, _gameLoop);
+            _gameDifficulty = new GameDifficulty(_score, _gameLoop, _config.InitialDecrease, _config.EndDecrease);
         }
 
         private void BindPause()
@@ -97,7 +101,7 @@ namespace Assets.Scripts.Tetris
 
         private void BindScore()
         {
-            _score = new Score();
+            _score = new Score(_config.ScoreFactor);
         }
 
         private void BindInput()
@@ -112,17 +116,17 @@ namespace Assets.Scripts.Tetris
 
         private void BindSpawn()
         {
-            _spawn.Initialize(_control, _tileGrid);
+            _spawn = new SpawnFigure(_control, _tileGrid, _config.SpawnPosition, _config.Figures);
         }
 
         private void BindGrid()
         {
-            _tileGrid = new TileGrid(_score, _tilemap);
+            _tileGrid = new TileGrid(_score, _tilemap, _config.Columns, _config.Rows);
         }
 
         private void BindGameLoop()
         {
-            _gameLoop.Initialize(_tileGrid, _control, _spawn, _keyboardInput);
+            _gameLoop.Initialize(_tileGrid, _control, _spawn, _keyboardInput, _config.StepDelay);
         }
     }
 }

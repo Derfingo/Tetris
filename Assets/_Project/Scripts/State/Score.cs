@@ -1,6 +1,4 @@
 ﻿using System;
-using TMPro;
-using UnityEngine;
 
 namespace Assets.Scripts.Tetris
 {
@@ -12,19 +10,19 @@ namespace Assets.Scripts.Tetris
 
         public int Amount { get; private set; }
 
-        private readonly int _multiplayer;
+        private readonly int _factor;
         private int _lines;
 
-        public Score()
+        public Score(int factor)
         {
             Amount = 0;
             _lines = 0;
-            _multiplayer = 500;
+            _factor = factor;
         }
 
         public void Add(int count)
         {
-            int sum = count * _multiplayer;
+            int sum = count * _factor;
             Amount += sum;
             ChangeCurrentScoreEvent?.Invoke(Amount);
         }

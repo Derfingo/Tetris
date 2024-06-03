@@ -4,22 +4,26 @@ namespace Assets.Scripts.Tetris
 {
     public class GameLoop : MonoBehaviour, IPause, IGameLoop, IReset
     {
-        [SerializeField] private float _stepDelay;
-
         private IInput _input;
         private FigureControl _control;
         private SpawnFigure _spawn;
         private TileGrid _grid;
 
+        private float _stepDelay;
+        private float _defaultStepDelay;
         private float _timeStep;
+
         private bool _isPause = true;
 
-        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, IInput input)
+        public void Initialize(TileGrid grid, FigureControl control, SpawnFigure spawn, IInput input, float stepDelay)
         {
             _control = control;
             _spawn = spawn;
             _input = input;
             _grid = grid;
+
+            _defaultStepDelay = stepDelay;
+            _timeStep = stepDelay;
 
             AddListeners();
         }
@@ -27,7 +31,7 @@ namespace Assets.Scripts.Tetris
         void IReset.Reset()
         {
             _timeStep = 0;
-            _stepDelay = 0.5f;
+            _stepDelay = _defaultStepDelay;
         }
 
         public void ChangeStepDelay(float decrease)
@@ -57,12 +61,12 @@ namespace Assets.Scripts.Tetris
 
         private void UpdateCycle()
         {
-            _grid.SetFigure(_control.ActiveFigure);
+            _grid.SetFigure(_control.Active);
             _grid.ClearFullLines();
             _spawn.Spawn();
         }
 
-        private void ChangeStepDelay(bool isDrop)
+        private void OnAccelerateDrop(bool isDrop)
         {
             if (isDrop)
             {
@@ -76,14 +80,19 @@ namespace Assets.Scripts.Tetris
 
         private void AddListeners()
         {
-            _control.OnLand += UpdateCycle;
-            _input.OnDropSlow += ChangeStepDelay;
+            _control.OnLandEvent += UpdateCycle;
+            _input.OnDropSlow += OnAccelerateDrop;
         }
 
         private void RemoveListeners()
         {
-            _control.OnLand -= UpdateCycle;
-            _input.OnDropSlow -= ChangeStepDelay;
+            _control.OnLandEvent -= UpdateCycle;
+            _input.OnDropSlow -= OnAccelerateDrop;
+        }
+
+        ~GameLoop()
+        {
+            RemoveListeners();
         }
     }
 }

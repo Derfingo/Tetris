@@ -8,8 +8,8 @@ namespace Assets.Scripts.Tetris
         public Vector3Int[] Cells { get; private set; }
         public Vector3Int Position { get; private set; }
 
+        private readonly TileGrid _grid;
         private int _rotationIndex;
-        private TileGrid _grid;
 
         public Figure(TetrominoData data, Vector3Int position, TileGrid grid)
         {
@@ -20,9 +20,13 @@ namespace Assets.Scripts.Tetris
             FillCells();
         }
 
-        public bool Move(Vector3Int direction)
+        public bool TryMove(Vector3Int direction, bool isRedraw)
         {
-            _grid.ClearFigure(this);
+            if (isRedraw)
+            {
+                _grid.ClearFigure(this);
+            }
+            
             Vector3Int offset = Position + direction;
             bool isValid = _grid.IsValidPosition(this, offset);
 
@@ -31,7 +35,11 @@ namespace Assets.Scripts.Tetris
                 Position = offset;
             }
 
-            _grid.SetFigure(this);
+            if (isRedraw)
+            {
+                _grid.SetFigure(this);
+            }
+            
             return isValid;
         }
 
@@ -52,15 +60,15 @@ namespace Assets.Scripts.Tetris
             _grid.SetFigure(this);
         }
 
-        private bool TestWallKicks(int rotationIndex, int direcion)
+        private bool TestWallKicks(int rotationIndex, int rotationDirection)
         {
-            int wallKickIndex = GetWallKickIndex(rotationIndex, direcion);
+            int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
 
             for (int i = 0; i < Data.WallKicks.GetLength(1); i++)
             {
                 Vector2Int translation = Data.WallKicks[wallKickIndex, i];
 
-                if (Move((Vector3Int)translation))
+                if (TryMove((Vector3Int)translation, false))
                 {
                     return true;
                 }
@@ -69,11 +77,11 @@ namespace Assets.Scripts.Tetris
             return false;
         }
 
-        private int GetWallKickIndex(int rotationIndex, int direcion)
+        private int GetWallKickIndex(int rotationIndex, int rotationDirection)
         {
             int wallKickIndex = rotationIndex * 2;
 
-            if (direcion < 0)
+            if (rotationDirection < 0)
             {
                 wallKickIndex--;
             }
