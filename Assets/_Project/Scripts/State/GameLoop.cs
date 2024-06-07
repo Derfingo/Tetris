@@ -37,7 +37,6 @@ namespace Assets.Scripts.Tetris
         public void ChangeStepDelay(float decrease)
         {
             _stepDelay -= decrease;
-            Debug.Log(_stepDelay);
         }
 
         public void Pause(bool isPaused)

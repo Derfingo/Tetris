@@ -42,9 +42,10 @@
             _pauseView.OnPauseClickEvent += _pause.Pause;
             _spawn.OnShowNextEvent += _showView.Show;
 
-            _score.ChangeCurrentScoreEvent += _scoreView.SetCurrent;
-            _score.ChangeLinesScoreEvent += _scoreView.SetLines;
-            _score.ChangeTopScoreEvent += _scoreView.SetTop;
+            _score.ChangeCurrentEvent += _scoreView.SetCurrent;
+            _score.ChangeLinesEvent += _scoreView.SetLines;
+            _score.ChangeLevelEvent += _scoreView.SetLevel;
+            _score.ChangeTopEvent += _scoreView.SetTop;
 
             _state.OnReadyToStartEvent += _mainView.ShowButtons;
             _mainView.OnStartClickEvent += _state.StartOver;
@@ -56,9 +57,9 @@
             _pauseView.OnPauseClickEvent -= _pause.Pause;
             _spawn.OnShowNextEvent -= _showView.Show;
 
-            _score.ChangeCurrentScoreEvent -= _scoreView.SetCurrent;
-            _score.ChangeLinesScoreEvent -= _scoreView.SetLines;
-            _score.ChangeTopScoreEvent -= _scoreView.SetTop;
+            _score.ChangeCurrentEvent -= _scoreView.SetCurrent;
+            _score.ChangeLinesEvent -= _scoreView.SetLines;
+            _score.ChangeTopEvent -= _scoreView.SetTop;
 
             _state.OnReadyToStartEvent -= _mainView.ShowButtons;
             _mainView.OnStartClickEvent -= _state.StartOver;

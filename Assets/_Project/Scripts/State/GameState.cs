@@ -40,11 +40,11 @@ namespace Assets.Scripts.Tetris
 
         private void SaveScore()
         {
-            if (_score.Amount > _saveData.Score)
+            if (_score.Current > _saveData.Score)
             {
                 var data = new SaveData
                 {
-                    Score = _score.Amount
+                    Score = _score.Current
                 };
                 _saveSystem.Save(data);
             }

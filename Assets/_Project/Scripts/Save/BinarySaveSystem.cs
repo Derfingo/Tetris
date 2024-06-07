@@ -11,7 +11,7 @@ namespace Assets.Scripts.Tetris
         public BinarySaveSystem()
         {
             _savePath = Application.persistentDataPath + "/Save.dat";
-            Debug.Log(_savePath);
+            //Debug.Log(_savePath);
         }
 
         public SaveData Load()

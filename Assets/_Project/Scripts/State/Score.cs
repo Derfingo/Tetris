@@ -4,47 +4,58 @@ namespace Assets.Scripts.Tetris
 {
     public class Score : IScore, IReset
     {
-        public event Action<int> ChangeCurrentScoreEvent;
-        public event Action<int> ChangeLinesScoreEvent;
-        public event Action<int> ChangeTopScoreEvent;
+        public event Action<int> ChangeCurrentEvent;
+        public event Action<int> ChangeLinesEvent;
+        public event Action<int> ChangeLevelEvent;
+        public event Action<int> ChangeTopEvent;
 
-        public int Amount { get; private set; }
+        public int Current { get; private set; }
 
         private readonly int _factor;
+        private int _level;
         private int _lines;
 
         public Score(int factor)
         {
-            Amount = 0;
+            Current = 0;
             _lines = 0;
+            _level = 1;
             _factor = factor;
         }
 
         public void Add(int count)
         {
             int sum = count * _factor;
-            Amount += sum;
-            ChangeCurrentScoreEvent?.Invoke(Amount);
+            Current += sum;
+            ChangeCurrentEvent?.Invoke(Current);
         }
 
         public void AddLines(int count)
         {
             _lines += count;
-            ChangeLinesScoreEvent?.Invoke(_lines);
+            ChangeLinesEvent?.Invoke(_lines);
+        }
+
+        public void AddLevel()
+        {
+            _level++;
+            ChangeLevelEvent?.Invoke(_level);
         }
 
         public void SetTop(int count)
         {
-            ChangeTopScoreEvent?.Invoke(count);
+            ChangeTopEvent?.Invoke(count);
         }
 
         public void Reset()
         {
-            Amount = 0;
+            Current = 0;
             _lines = 0;
+            _level = 1;
 
-            ChangeCurrentScoreEvent?.Invoke(Amount);
-            ChangeLinesScoreEvent?.Invoke(_lines);
+            ChangeCurrentEvent?.Invoke(Current);
+            ChangeLinesEvent?.Invoke(_lines);
+            ChangeLevelEvent?.Invoke(_level);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Assets.Scripts.Tetris
             _initialDecrease = initialDecrease;
             _endDecrease = endDecrease;
 
-            _score.ChangeLinesScoreEvent += OnDecreaseDelay;
+            _score.ChangeLinesEvent += OnDecreaseDelay;
         }
 
         public void Reset()
@@ -41,13 +41,14 @@ namespace Assets.Scripts.Tetris
                 else if (_counter % END_STEP_LINES == 0)
                 {
                     _gameLoop.ChangeStepDelay(_endDecrease);
+                    _score.AddLevel();
                 }
             }
         }
 
         ~GameDifficulty()
         {
-            _score.ChangeLinesScoreEvent -= OnDecreaseDelay;
+            _score.ChangeLinesEvent -= OnDecreaseDelay;
         }
     }
 }

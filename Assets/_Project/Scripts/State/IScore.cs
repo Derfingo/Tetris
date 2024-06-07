@@ -4,13 +4,15 @@ namespace Assets.Scripts.Tetris
 {
     public interface IScore
     {
-        public event Action<int> ChangeCurrentScoreEvent;
-        public event Action<int> ChangeLinesScoreEvent;
-        public event Action<int> ChangeTopScoreEvent;
+        public event Action<int> ChangeCurrentEvent;
+        public event Action<int> ChangeLinesEvent;
+        public event Action<int> ChangeLevelEvent;
+        public event Action<int> ChangeTopEvent;
 
-        public int Amount { get; }
+        public int Current { get; }
         void Add(int count);
         void SetTop(int count);
         void AddLines(int count);
+        void AddLevel();
     }
 }
