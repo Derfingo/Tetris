@@ -20,7 +20,6 @@ namespace Assets.Scripts.Tetris
             AddListeners();
             _startButton.gameObject.SetActive(false);
             _settingsButton.gameObject.SetActive(false);
-            gameObject.SetActive(true);
         }
 
         public void ShowButtons()

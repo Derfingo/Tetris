@@ -14,13 +14,21 @@ namespace Assets.Scripts.Tetris
         private readonly int _factor;
         private int _level;
         private int _lines;
+        private int _top;
 
-        public Score(int factor)
+        public Score(int factor, int top)
         {
             Current = 0;
             _lines = 0;
             _level = 1;
+
+            _top = top;
             _factor = factor;
+        }
+
+        public bool IsCurrentLarger()
+        {
+            return Current > _top;
         }
 
         public void Add(int count)

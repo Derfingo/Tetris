@@ -4,19 +4,19 @@ namespace Assets.Scripts.Tetris
 {
     public class GameState : IGameState
     {
-        private readonly ISaveSystem _saveSystem;
         private readonly IReset _resetHandler;
         private readonly IInitialization _init;
         private readonly SpawnFigure _spawn;
         private readonly Score _score;
         private SaveData _saveData;
+        private ISaveController _saveController;
 
         public event Action OnReadyToStartEvent;
 
-        public GameState(IInitialization init, ISaveSystem saveSystem, SpawnFigure spawn, Score score, IReset resetHandler)
+        public GameState(IInitialization init, SpawnFigure spawn, Score score, IReset resetHandler, ISaveController saveController)
         {
             _resetHandler = resetHandler;
-            _saveSystem = saveSystem;
+            _saveController = saveController;
             _spawn = spawn;
             _score = score;
             _init = init;
@@ -29,35 +29,31 @@ namespace Assets.Scripts.Tetris
         {
             _resetHandler.Reset();
             _spawn.Spawn();
-            LoadScore();
+            SetScore();
         }
 
         private void GameOver()
         {
-            SaveScore();
+            UpdateRecord();
             StartOver();
         }
 
-        private void SaveScore()
+        private void UpdateRecord()
         {
-            if (_score.Current > _saveData.Score)
+            if (_score.IsCurrentLarger())
             {
-                var data = new SaveData
-                {
-                    Score = _score.Current
-                };
-                _saveSystem.Save(data);
+                _saveController.SaveScore(_score.Current);
             }
         }
 
-        private void LoadScore()
+        private void SetScore()
         {
-            _saveData = _saveSystem.Load();
-            _score.SetTop(_saveData.Score);
+            _score.SetTop(_saveController.GetData().TopScore);
         }
 
         private void ReadyToStart()
         {
+            _saveController.SetMute();
             OnReadyToStartEvent?.Invoke();
         }
 

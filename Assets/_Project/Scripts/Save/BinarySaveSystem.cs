@@ -6,21 +6,15 @@ namespace Assets.Scripts.Tetris
 {
     public class BinarySaveSystem : ISaveSystem
     {
-        private readonly string _savePath;
-
-        public BinarySaveSystem()
-        {
-            _savePath = Application.persistentDataPath + "/Save.dat";
-            //Debug.Log(_savePath);
-        }
+        private readonly string _path = Application.persistentDataPath + "/SettingsData.dat";
 
         public SaveData Load()
         {
-            var data = new SaveData();
+            SaveData data;
 
-            if(File.Exists(_savePath))
+            if(File.Exists(_path))
             {
-                using FileStream file = File.Open(_savePath, FileMode.Open);
+                using FileStream file = File.Open(_path, FileMode.Open);
                 {
                     object loadedData = new BinaryFormatter().Deserialize(file);
                     data = (SaveData)loadedData;
@@ -29,14 +23,13 @@ namespace Assets.Scripts.Tetris
                 return data;
             }
 
-            data.Score = 0;
-
+            data = new SaveData();
             return data;
         }
 
         public void Save(SaveData data)
         {
-            using FileStream file = File.Create(_savePath);
+            using FileStream file = File.Create(_path);
             new BinaryFormatter().Serialize(file, data);
         }
     }

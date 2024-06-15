@@ -13,6 +13,9 @@ namespace Assets.Scripts.Tetris
             _mainView.StartButton.onClick.AddListener(OnStartClick);
             _mainView.SettingsButton.onClick.AddListener(OnSettingsClick);
             _settingsView.MainMenuButton.onClick.AddListener(OnMainMenuClick);
+
+            _settingsView.Hide();
+            _mainView.Show();
         }
 
         private void OnStartClick()
@@ -31,6 +34,7 @@ namespace Assets.Scripts.Tetris
             _settingsView.Hide();
             _mainView.Show();
         }
+
         ~ViewTransition()
         {
             _mainView.StartButton.onClick.RemoveAllListeners();

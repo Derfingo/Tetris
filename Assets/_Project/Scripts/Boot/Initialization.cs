@@ -10,6 +10,7 @@ namespace Assets.Scripts.Tetris
 
         [SerializeField] private Tilemap _tilemap;
         [SerializeField] private GameLoop _gameLoop;
+        [SerializeField] private SoundSystem _soundSystem;
         [SerializeField] private GameConfigProvider _configProvider;
         [Space()]
         [Header("View")]
@@ -23,14 +24,16 @@ namespace Assets.Scripts.Tetris
         private Score _score;
         private TileGrid _tileGrid;
         private SpawnFigure _spawn;
-        private KeyboardInput _keyboardInput;
         private GameState _gameState;
         private FigureControl _control;
+        private AppSettings _appSettings;
         private GamePresenter _presenter;
         private ResetHandler _resetHandler;
         private PauseHandler _pauseHandler;
         private BinarySaveSystem _saveSystem;
+        private KeyboardInput _keyboardInput;
         private GameDifficulty _gameDifficulty;
+        private SaveController _saveController;
 
         private GameConfig _config;
 
@@ -44,8 +47,10 @@ namespace Assets.Scripts.Tetris
 
         private void Compose()
         {
+            BindAppSettings();
             BindInput();
             BindSaveSystem();
+            BindSaveController();
             BindScore();
             BindGrid();
             BindControl();
@@ -57,6 +62,22 @@ namespace Assets.Scripts.Tetris
             BindGameState();
             BindView();
             BindPresenter();
+            BindSoundSystem();
+        }
+
+        private void BindSaveController()
+        {
+            _saveController = new SaveController(_saveSystem);
+        }
+
+        private void BindAppSettings()
+        {
+            _appSettings = new AppSettings();
+        }
+
+        private void BindSoundSystem()
+        {
+            _soundSystem.Initialize(_score, _saveController);
         }
 
         private void BindReset()
@@ -81,17 +102,28 @@ namespace Assets.Scripts.Tetris
             _mainView.Initialize();
             _scoreView.Initialize();
             _pauseView.Initialize();
+            _settingsView.Initialize();
             _viewTransition.Initialize();
         }
 
         private void BindPresenter()
         {
-            _presenter = new GamePresenter(_settingsView, _pauseView, _scoreView, _figureView, _mainView, _spawn, _score, _pauseHandler, _gameState);
+            _presenter = new GamePresenter(_settingsView,
+                                           _pauseView, 
+                                           _scoreView, 
+                                           _figureView, 
+                                           _mainView, 
+                                           _spawn, 
+                                           _score, 
+                                           _pauseHandler, 
+                                           _soundSystem, 
+                                           _gameState,
+                                           _saveController);
         }
 
         private void BindGameState()
         {
-            _gameState = new GameState(this, _saveSystem, _spawn, _score, _resetHandler);
+            _gameState = new GameState(this, _spawn, _score, _resetHandler, _saveController);
         }
 
         private void BindSaveSystem()
@@ -101,7 +133,7 @@ namespace Assets.Scripts.Tetris
 
         private void BindScore()
         {
-            _score = new Score(_config.ScoreFactor);
+            _score = new Score(_config.ScoreFactor, _saveController.GetData().TopScore);
         }
 
         private void BindInput()
