@@ -20,9 +20,9 @@
 <div align=center>   
 
 <p align="left">
-  <img src="Preview\Main.png" width="250">
-  <img src="Preview\Game.png" width="250">
-  <img src="Preview\Settings.png" width="250">
+  <img src="Preview\Main.jpg" width="250">
+  <img src="Preview\Game.jpg" width="250">
+  <img src="Preview\Settings.jpg" width="250">
 </p>
 
 </div>
